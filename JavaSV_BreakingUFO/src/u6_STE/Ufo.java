@@ -31,7 +31,9 @@ public class Ufo extends JFrame {
 	int timeElapsed = 0;				// 경과시간 0으로 초기화
 	int score = 0;						// 점수
 
-	final int DELAY = 4;				// 타이머 액션 발생 빈도/시간 : t1 제외한 모든 시계
+	final int PA_DELAY = 32;			// 타이머 액션 발생 빈도/시간 : pa
+	final int T2_DELAY = 2;				// 타이머 액션 발생 빈도/시간 : t2, left, right (작아질수록 공 속도 빨라짐)
+	final int BA_DELAY = 2;				// 타이머 액션 발생 빈도/시간 : t2, left, right (작아질수록 바 속도 빨라짐)
 	DrawPanel drawPanel;				// 벽돌 깨는 패널		
 	ScorePanel scorePanel;				// 점수, 체력 표시되는 패널
 	
@@ -102,7 +104,7 @@ public class Ufo extends JFrame {
 		setResizable(false);
 
 		t1 = new Timer(1000, new TimerListener());
-		pa = new Timer(DELAY, new TimerListener3());
+		pa = new Timer(PA_DELAY, new TimerListener3());
 	}
 
 	class Brick {
@@ -330,8 +332,8 @@ public class Ufo extends JFrame {
 	class Person extends ImageIcon{
 		int x, y;
 		int dx, dy;
-		int timeToDest = 1000;
-		int nos = timeToDest/DELAY;
+		int timeToDest = 1000;	// 올라가는 데 걸리는 시간 : 1초
+		int nos = timeToDest/PA_DELAY;	// 
 		public Person() {
 			super("src/images/person.png");
 			x = (int)(Math.random()*Main.SCREEN_WIDTH);
@@ -350,8 +352,8 @@ public class Ufo extends JFrame {
 	class DrawPanel extends JPanel {
 
 		public DrawPanel() {
-			left = new Timer(DELAY,new LeftMove());
-			right = new Timer(DELAY, new RightMove());
+			left = new Timer(BA_DELAY,new LeftMove());
+			right = new Timer(BA_DELAY, new RightMove());
 			addKeyListener(new KeyListener() {
 				public void keyPressed(KeyEvent e) {
 					int keycode = e.getKeyCode();
@@ -482,7 +484,7 @@ public class Ufo extends JFrame {
 
 		//scorePanel.add(timeLabel);
 		scorePanel.add(scoreLabel);
-		t2 = new Timer(DELAY, new TimerListener2());
+		t2 = new Timer(T2_DELAY, new TimerListener2());
 		t2.start();
 	}
 
